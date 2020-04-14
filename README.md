@@ -17,19 +17,23 @@ Web application which uses machine learning to categorize messages from disaster
 `pip install -r requirements.txt`
 
 3. Export path into env_name/bin/activate by writing on a top of a file
+
 `export OLD_PYTHONPATH="$PYTHONPATH"`
+
 `export PYTHONPATH="path_to_project/disaster-response-project/"`
 
-4. Run the following command in the app's directory to run your web app.
+4. Run the following command in the app's directory to run your web app
     `python run.py`
 
 5. Go to http://0.0.0.0:3001/
 
 ## Training model <a name="training"></a>
 If you want to re-train model run
+
 `python train_classifier.py 'path_to_database' 'classifier.pkl'`
 
 If you want to run script with ETL pipeline run
+
 `python process_data.py 'disaster_messages.csv' 'disaster_categories.csv' 'DisasterResponse.db'`
 
 ## Files Descriptions <a name="files"></a>
