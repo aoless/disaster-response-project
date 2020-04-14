@@ -66,7 +66,7 @@ def build_model():
 def evaluate_model(model, X_test, Y_test, category_names):
     """Evaluates how accurate is a model with it's predictions"""
     Y_pred = model.predict(X_test)
-    show_scores(Y_pred)
+    show_scores(Y_pred, Y_test, category_names)
 
 
 def extract_macro_avg(report):
@@ -76,12 +76,15 @@ def extract_macro_avg(report):
             return float(item.strip().split()[4])
 
 
-def show_scores(predicted_values):
+def show_scores(predicted_values, real_values, classes_names):
     """Shows classifiaction report for every category and counts mean fscore macro avg"""
     macro_avg_list = []
     
     for i in range(1, len(classes_names)):
-        report = classification_report(Y_test.iloc[:, i].values, Y_pred[:, i], zero_division=1)
+        report = classification_report(
+            real_values.iloc[:, i].values,
+            predicted_values[:, i],
+            zero_division=1)
         macro_avg_list.append(extract_macro_avg(report))
         print("Category:", classes_names[i], "\n", report)
         
@@ -105,7 +108,7 @@ def main():
         print('Building model...')
         model = build_model()
         
-        print('Training model...\nThis may take a while...')
+        print('Training model.\nThis may take a while...')
         model.fit(X_train, Y_train)
         
         print('Evaluating model...')
