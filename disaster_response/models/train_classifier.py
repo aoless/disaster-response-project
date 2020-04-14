@@ -18,6 +18,7 @@ from sqlalchemy import create_engine
 
 
 def load_database(database_filepath):
+    """Reads database from database_filepath and converts it to pandas DataFrame"""
     engine = create_engine(f"sqlite:///{database_filepath}")
     df = pd.read_sql_table("DisasterResponse", engine)
 
@@ -25,6 +26,7 @@ def load_database(database_filepath):
 
 
 def extract_features_and_labels(df):
+    """Extracts features and labels matrix from df"""
     num_of_feature_cols = 4
 
     X = df.message.values
@@ -35,6 +37,7 @@ def extract_features_and_labels(df):
 
 
 def tokenize(text):
+    """Splits text into tokens and applies lemmatisation on every one of it"""
     lemmatizer = WordNetLemmatizer()
     tokens = word_tokenize(text)
     clean_tokens = [lemmatizer.lemmatize(token.lower()) for token in tokens]
@@ -43,6 +46,7 @@ def tokenize(text):
 
 
 def build_model():
+    """Creates sklearn nlp pipeline and search for the best parameters"""
     pipeline = Pipeline([
         ("c_vect", CountVectorizer(tokenizer=tokenize, ngram_range=(1, 2), max_df=0.95)),
         ("tfidf", TfidfTransformer(use_idf=True, smooth_idf=True)),
@@ -60,26 +64,33 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    """Evaluates how accurate is a model with it's predictions"""
     Y_pred = model.predict(X_test)
-    macro_avg_list = []
-
-    for i in range(1, len(category_names)):
-        report = classification_report(Y_test.iloc[:, i].values, Y_pred[:, i], zero_division=1)
-        macro_avg_list.append(extract_macro_avg(report))
-        print("Category:", category_names[i], "\n", report)
-
-    overall_avg_score = sum(macro_avg_list) / len(macro_avg_list)
-    print(f"{overall_avg_score:.3}")
+    show_scores(Y_pred)
 
 
 def extract_macro_avg(report):
-    splitted = [elem.strip() for elem in report.split("\n")]
-    macro_avg = splitted[6].split()[4]
+    """Extracts macro avg fscore from sklearn's classification report"""
+    for item in report.split("\n"):
+        if "macro avg" in item:
+            return float(item.strip().split()[4])
+
+
+def show_scores(predicted_values):
+    """Shows classifiaction report for every category and counts mean fscore macro avg"""
+    macro_avg_list = []
     
-    return float(macro_avg)
+    for i in range(1, len(classes_names)):
+        report = classification_report(Y_test.iloc[:, i].values, Y_pred[:, i], zero_division=1)
+        macro_avg_list.append(extract_macro_avg(report))
+        print("Category:", classes_names[i], "\n", report)
+        
+    overall_avg_score = sum(macro_avg_list) / len(macro_avg_list)
+    print(f"Overral average score: {overall_avg_score:.3}")
 
 
 def save_model(model, model_filepath):
+    """Saves model to given filepath"""
     dump(model, model_filepath)
 
 
