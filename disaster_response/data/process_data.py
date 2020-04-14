@@ -45,6 +45,7 @@ def clean_data(df):
 
 
 def save_data(df, database_filepath):
+    """Saves dataframe to provided filepath"""
     engine = create_engine(f'sqlite:///{database_filepath}')
     df.to_sql('DisasterResponse', engine, index=False)
 
