@@ -94,9 +94,8 @@ def main():
         print('Building model...')
         model = build_model()
         
-        print('Training model...')
-        model = load("model.pkl")
-        #model.fit(X_train, Y_train)
+        print('Training model...\nThis may take a while...')
+        model.fit(X_train, Y_train)
         
         print('Evaluating model...')
         evaluate_model(model, X_test, Y_test, category_names)
