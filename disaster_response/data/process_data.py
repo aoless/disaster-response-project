@@ -1,5 +1,7 @@
 import sys
 
+from os import path
+
 import numpy as np
 import pandas as pd
 
@@ -46,6 +48,11 @@ def clean_data(df):
 
 def save_data(df, database_filepath):
     """Saves dataframe to provided filepath"""
+
+    if path.exists(database_filepath):
+        print(f"File with path {database_filepath} already exists.")
+        return None
+
     engine = create_engine(f'sqlite:///{database_filepath}')
     df.to_sql('DisasterResponse', engine, index=False)
 
