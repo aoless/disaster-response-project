@@ -41,10 +41,6 @@ def index():
     
     categories_dist = categories_df.sum(axis=0)
     categories_names = [category.replace("_", " ") for category in categories_dist.index]
-
-    colors = ['rgba(38, 24, 74, 0.8)', 'rgba(71, 58, 131, 0.8)',
-        'rgba(122, 120, 168, 0.8)', 'rgba(164, 163, 204, 0.85)',
-        'rgba(190, 192, 213, 1)']
     
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
@@ -52,32 +48,17 @@ def index():
         {
             'data': [
                 Bar(
-                    x=genre_names,
-                    y=genre_counts
-                )
-            ],
-
-            'layout': {
-                'title': 'Distribution of Message Genres',
-                'yaxis': {
-                    'title': "Count"
-                },
-                'xaxis': {
-                    'title': "Genre"
-                }
-            }
-        },
-
-        {
-            'data': [
-                Bar(
                     x=categories_names[3:],
                     y=list(categories_dist.values)[3:],
+                    marker=dict(
+                        color='rgba(51,102,255,0.5)',
+                        line=dict(color='rgba(51,51,153,0.5)', width=1)
+                    ),
                 )
             ],
 
             'layout': {
-                'title': 'Categories dist',
+                'title': 'Categories distribution',
                 'margin': {'b': 160},
                 'yaxis': {
                     'title': "Category"
@@ -96,14 +77,14 @@ def index():
                     y=genre_names,
                     orientation='h',
                     marker=dict(
-                        color='rgba(246, 78, 139, 0.6)',
+                        color='rgba(255,51,153,0.5)',
                         line=dict(color='rgba(246, 78, 139, 1.0)', width=3)
                     ),
                 )
             ],
 
             'layout': {
-                'title': 'Some other graph',
+                'title': 'Genre distribution',
                 'yaxis': {
                     'title': "Genre"
                 },
