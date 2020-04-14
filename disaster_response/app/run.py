@@ -32,7 +32,6 @@ model.verbose = False
 def index():
     
     # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
 
@@ -43,7 +42,6 @@ def index():
     categories_names = [category.replace("_", " ") for category in categories_dist.index]
     
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
         {
             'data': [
@@ -51,8 +49,8 @@ def index():
                     x=categories_names[3:],
                     y=list(categories_dist.values)[3:],
                     marker=dict(
-                        color='rgba(51,102,255,0.5)',
-                        line=dict(color='rgba(51,51,153,0.5)', width=1)
+                        color='rgba(51, 102, 255, 0.5)',
+                        line=dict(color='rgba(51, 51, 153, 0.5)', width=1)
                     ),
                 )
             ],
